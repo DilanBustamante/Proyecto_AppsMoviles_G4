@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormAppActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="493dp"
+        android:layout_height="57dp"
+        android:background="@android:color/holo_orange_dark"
+        android:padding="10dp"
+        android:text="Registro"
+        android:textAlignment="center"
+        android:textColor="#F3EFEF"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameForm"
+        android:layout_width="270dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/phoneForm"
+        android:layout_width="267dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Teléfono"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameForm" />
+
+    <EditText
+        android:id="@+id/emailForm"
+        android:layout_width="264dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Correo electronico"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneForm" />
+
+    <EditText
+        android:id="@+id/passwordForm"
+        android:layout_width="267dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="numberPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailForm" />
+
+    <EditText
+        android:id="@+id/validatePassForm"
+        android:layout_width="270dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Confirmar Contraseña"
+        android:inputType="numberPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordForm" />
+
+    <Button
+        android:id="@+id/buttonRegisterForm"
+        android:layout_width="242dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="91dp"
+        android:text="Registrarme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/validatePassForm" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

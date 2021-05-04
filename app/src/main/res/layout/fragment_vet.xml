@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/imageUser"
+        android:layout_width="175dp"
+        android:layout_height="168dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/nameVetTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/nameVetTxt"
+        android:layout_width="192dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Name Vet"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonInformation"
+        android:layout_width="195dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="20dp"
+        android:text="Editar información"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageUser"
+        app:layout_constraintTop_toBottomOf="@+id/nameVetTxt" />
+
+    <Button
+        android:id="@+id/buttonAddPlace"
+        android:layout_width="57dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="21dp"
+        android:background="#00FFFFFF"
+        android:text="Button"
+        app:icon="@drawable/ubicacion"
+        app:iconPadding="20dp"
+        app:iconTint="@android:color/holo_orange_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageUser" />
+
+    <Button
+        android:id="@+id/buttonPhone"
+        android:layout_width="52dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:background="#00FFFFFF"
+        android:text="Button"
+        app:icon="@drawable/telefono"
+        app:iconPadding="20dp"
+        app:iconTint="@android:color/holo_orange_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddPlace" />
+
+    <TextView
+        android:id="@+id/vetAddress"
+        android:layout_width="231dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="105dp"
+        android:hint="Dirección"
+        android:padding="10dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddPlace"
+        app:layout_constraintTop_toBottomOf="@+id/imageUser" />
+
+    <TextView
+        android:id="@+id/userPhoneTxt"
+        android:layout_width="229dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="105dp"
+        android:hint="Teléfono"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddPlace"
+        app:layout_constraintTop_toBottomOf="@+id/vetAddress" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="304dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="44dp"
+        android:padding="10dp"
+        android:text="Horarios de atención"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userPhoneTxt" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
