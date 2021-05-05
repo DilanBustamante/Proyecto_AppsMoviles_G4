@@ -12,14 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SearchView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class homeFrag extends Fragment {
+public class homeFrag extends Fragment implements SearchView.OnQueryTextListener{
 
 
-    private EditText search;
+    private SearchView search;
     private RecyclerView listVet;
 
     private VetAdapter vetAdapter;
@@ -44,7 +45,7 @@ public class homeFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        search = root.findViewById(R.id.searchText);
+        search = root.findViewById(R.id.search);
         listVet = root.findViewById(R.id.ListVet);
 
         vetAdapter = new VetAdapter();
@@ -55,6 +56,7 @@ public class homeFrag extends Fragment {
         db = FirebaseFirestore.getInstance();
         this.getData("*");
 
+        this.initListener();
 
         //scrolling event
         listVet.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -102,8 +104,28 @@ public class homeFrag extends Fragment {
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
 
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(!newText.equals("")){
+            vetAdapter.filer(newText);
+        }else{
+            vetAdapter.clear();
+            this.getData("*");
+        }
+        return false;
+    }
+
+
+    private void initListener(){
+        search.setOnQueryTextListener(this);
+    }
 
 
 
