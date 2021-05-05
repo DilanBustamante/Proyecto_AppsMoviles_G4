@@ -2,6 +2,7 @@ package com.example.proyecto_appsmoviles_g4;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,18 +53,29 @@ public class homeFrag extends Fragment {
         listVet.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         db = FirebaseFirestore.getInstance();
-        db.collection("vet").get().addOnSuccessListener(
-                command -> {
-                    //Respuesta de la BD
-                    for(DocumentSnapshot doc : command.getDocuments()){
+        this.getData("*");
 
-                       // doc -> vet
-                        Vet vet = doc.toObject(Vet.class);
-                        vetAdapter.addVet(vet);
 
-                    }
+        //scrolling event
+        listVet.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled( RecyclerView recyclerView, int dx, int dy) {
+
+                //TOP
+                if(!recyclerView.canScrollVertically(1) && dy<0){
+
                 }
-        );
+
+                //BUTTON
+                if(!recyclerView.canScrollVertically(1) && dy>0){
+                    //Cargar las sgts 4 veterinarias
+                    getData(vetAdapter.getLastVet().getName());
+
+                }
+
+            }
+        });
+
 
         return root;
     }
@@ -71,6 +83,23 @@ public class homeFrag extends Fragment {
 
 
 
+    public void getData(String inicio){
+        db.collection("vet")
+                .orderBy("name")
+                .limit(4)
+                .startAfter(inicio)
+                .get().addOnSuccessListener(
+                command -> {
+                    //Respuesta de la BD
+                    for(DocumentSnapshot doc : command.getDocuments()){
+                        // doc -> vet
+                        Vet vet = doc.toObject(Vet.class);
+                        vetAdapter.addVet(vet);
+
+                    }
+                }
+        );
+    }
 
 
 

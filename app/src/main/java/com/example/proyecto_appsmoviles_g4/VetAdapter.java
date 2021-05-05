@@ -61,7 +61,9 @@ public class VetAdapter extends RecyclerView.Adapter<VetView> {
     }
 
 
-
+    public Vet getLastVet() {
+        return vets.get(vets.size()-1);
+    }
 
 
 }
