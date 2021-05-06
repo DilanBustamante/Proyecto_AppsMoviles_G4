@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button logInButton;
     private TextView regiterButton;
 
-
-
+    private FirebaseFirestore db;
+    private boolean resp;
 
     private RegisterActivity registerActivity;
     private RegisterActivity2 registerActivity2;
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         logInButton = findViewById(R.id.logInButton);
         regiterButton = findViewById(R.id.RegisterButton);
 
+        db = FirebaseFirestore.getInstance();
+
 
 
 
@@ -80,12 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
      switch (v.getId()) {
             case R.id.logInButton:
-
-
-
-                Intent intent = new Intent(this, inicioActivity.class);
-                startActivity(intent);
+                this.login();
              break;
+
          case R.id.RegisterButton:
              Intent intent2 = new Intent(this, RegisterActivity.class);
              startActivity(intent2);
@@ -118,7 +117,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+     public boolean login(){
 
+         //mirar si usuario existe
+         db.collection("vet")
+                 .whereEqualTo("name",userName.getText().toString())
+                 .whereEqualTo("password",userPassword.getText().toString())
+                 .get().addOnSuccessListener(
+                 query -> {
+                     if(query.getDocuments().size()==0){
+                         resp = false;
+                         Toast.makeText(this, "Usuario o contraseña invalidos por favor intente de nuevo", Toast.LENGTH_LONG).show();
+                         userName.setText("");
+                         userPassword.setText("");
+                     }else{
+                          resp = true;
+                          Intent intent = new Intent(this, inicioActivity.class);
+                         startActivity(intent);
+
+                     }
+                 }
+         );
+
+        return resp;
+ }
 
 
 }

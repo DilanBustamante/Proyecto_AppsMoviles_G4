@@ -1,5 +1,7 @@
 package com.example.proyecto_appsmoviles_g4;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +24,8 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     private Button editInformation;
     private TextView AddresVetxt;
     private String addressGlo;
+
+    private OnNewKey observerkey;
 
 
     public vetFrag() {
@@ -72,8 +76,15 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         switch (v.getId()){
             case R.id.buttonAddPlace:
                 Toast.makeText(getActivity(), "Agrega la ubicación de tu veterinaria", Toast.LENGTH_LONG).show();
-                inicioActivity activity = (inicioActivity)getActivity();
-                activity.showFragment(activity.getmapFragment());
+
+//                SharedPreferences sp = this.getActivity().getSharedPreferences("normalMap", Context.MODE_PRIVATE);
+//                sp.edit().putString("key2","normalMap").apply();
+
+                  observerkey.onNewkey("normalMap","");
+                  inicioActivity activity = (inicioActivity)getActivity();
+                  activity.showFragment(activity.getmapFragment());
+
+
 
             break;
 
@@ -87,8 +98,22 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
     @Override
     public void onNewAddress(String address) {
-       this.addressGlo = address;
+        this.addressGlo = address;
     }
 
 
+
+
+    public void setStringkey(OnNewKey observer){
+        this.observerkey = observer;
+    }
+
+
+
+
+
+}
+
+interface OnNewKey{
+    void onNewkey(String key2, String key1);
 }

@@ -2,6 +2,8 @@ package com.example.proyecto_appsmoviles_g4;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -30,8 +32,10 @@ import java.util.ArrayList;
 
 
 import static android.content.Context.LOCATION_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 
-public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, View.OnClickListener{
+public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, View.OnClickListener,OnNewKey {
+
 
     private GoogleMap mMap;
     private  LocationManager manager;
@@ -44,9 +48,10 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
     private Button continueButtonmap;
     private Marker me;
 
-    private String keyWord = "";
     private Bundle extras;
 
+    private String key1;
+    private String key2="";
 
 
 
@@ -79,6 +84,7 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
         myLocationButton.setOnClickListener(this);
         continueButtonmap.setOnClickListener(this);
 
+        key1 = "";
 
         return root;
 
@@ -90,21 +96,35 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
         FragmentActivity fragmentAc = getActivity();
         manager = (LocationManager) fragmentAc.getSystemService(LOCATION_SERVICE);
-
         this.setInitialPos();
-
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,2,this);
 
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerClickListener(this);
+        continueButtonmap.setEnabled(false);
 
-        if(keyWord.equals("keymapword")){
-            continueButtonmap.setEnabled(false);
-        }
+//        Log.e(">>>>>","MIRA LOS ESTADOS DE KEY1 Y KEY2 :"+key1+" "+key2);
+//
+//        if(!key1.equals("") && !key2.equals("")){
+//            key1 = "";
+//        }
+//
+//        if(key1.equals("mapOnlyview")){
+//
+//            key1 = "";
+//            Log.e(">>>>>>>","EL KEY 1 ES :"+ key1);
+//            mMap.getUiSettings().setAllGesturesEnabled(false);
+//
+//            mMap.setOnMapLongClickListener(null);
+//
+//
+//        }else if(key2.equals("normalMap")){
+//            Log.e(">>>>>>>","entra al else if de onmapReady");
+//             mMap.getUiSettings().setAllGesturesEnabled(true);
+//        }
 
     }
 
@@ -201,19 +221,34 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
 
     @Override
     public void onMapClick(LatLng latLng) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+        if(key1.equals("")){
+            SharedPreferences sp = this.getActivity().getSharedPreferences("mapOnlyview", MODE_PRIVATE);
+            key1 = sp.getString("key1", "noKeyWord");
+
+            if(key1.equals("mapOnlyview")){
+                this.onMapLongClick(null);
+                this.continueButtonmap.setEnabled(false);
+             }
+
+          }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
     }
 
 
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Marker p =  mMap.addMarker(new MarkerOptions().position(latLng).title("Nuevo lugar"));
-        this.activarAddresAndSnippet(p);
-        marcadorGlo = p;
+        if(!key2.equals("") && key1.equals("")) {
 
-        LatLng locacion = new LatLng(p.getPosition().latitude,p.getPosition().longitude);
-        locaciones.add(locacion);
+            key2 ="";
+            continueButtonmap.setEnabled(true);
+            Marker p = mMap.addMarker(new MarkerOptions().position(latLng).title("Nuevo lugar"));
+            this.activarAddresAndSnippet(p);
+            marcadorGlo = p;
+            LatLng locacion = new LatLng(p.getPosition().latitude, p.getPosition().longitude);
+            locaciones.add(locacion);
+
+        }
     }
 
 
@@ -225,8 +260,13 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
     }
 
      public void activarAddresAndSnippet(Marker p){
-        String address = this.getAddressFromLatLng(p.getPosition()).toString();
-        p.setSnippet(address);
+        try {
+            String address = this.getAddressFromLatLng(p.getPosition()).toString();
+            p.setSnippet(address);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -289,9 +329,20 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
         this.adrdressListener = observer;
     }
 
+
     public interface OnNewAddressListener{
         void onNewAddress (String address);
     }
+
+
+    @Override
+    public void onNewkey(String key2,String key1) {
+        Log.e(">>>>>>>>>>>","key1 es:"+key1+"KEY 2 :"+key2);
+      mMap.setOnMapLongClickListener(null);
+      this.key1 = key1;
+      this.key2 = key2;
+    }
+
 
 
 }

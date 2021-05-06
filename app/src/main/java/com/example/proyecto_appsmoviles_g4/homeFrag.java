@@ -49,7 +49,7 @@ public class homeFrag extends Fragment implements SearchView.OnQueryTextListener
         listVet = root.findViewById(R.id.ListVet);
 
         vetAdapter = new VetAdapter();
-        Log.e(">>>>>>>>","el valor del vet es :"+vetAdapter);
+
         listVet.setAdapter(vetAdapter);
         listVet.setLayoutManager(new LinearLayoutManager(this.getContext()));
 

@@ -6,11 +6,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class inicioActivity extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class inicioActivity extends AppCompatActivity {
     private vetFrag vetFragment;
     private BottomNavigationView navigationView;
     private inicioActivity inicioActivity;
+
 
 
 
@@ -47,22 +50,29 @@ public class inicioActivity extends AppCompatActivity {
 
 
 
+
           //patron observer para enviar dirección
            mapFragment.setObserver(vetFragment);
 
+           vetFragment.setStringkey(mapFragment);
 
-         showFragment(homeFragment);
+           showFragment(homeFragment);
+
+
+
 
 
         navigationView.setOnNavigationItemSelectedListener(
                 (MenuItem) ->{
                     switch (MenuItem.getItemId()){
                         case R.id.homeid :
-                        this.showFragment(homeFragment);
+                             this.showFragment(homeFragment);
                         break;
 
                         case R.id.map:
-                        this.showFragment(mapFragment);
+                            SharedPreferences sp = getSharedPreferences("mapOnlyview",MODE_PRIVATE);
+                            sp.edit().putString("key1","mapOnlyview").apply();
+                            this.showFragment(mapFragment);
                         break;
 
                         case R.id.veterinariaid:
@@ -99,7 +109,6 @@ public class inicioActivity extends AppCompatActivity {
       public homeFrag getHomeFragment(){
         return homeFragment;
        }
-
 
       public mapFrag getmapFragment(){
         return mapFragment;
