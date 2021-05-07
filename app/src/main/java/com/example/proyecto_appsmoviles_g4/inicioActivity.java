@@ -29,6 +29,8 @@ public class inicioActivity extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,8 @@ public class inicioActivity extends AppCompatActivity {
                 (MenuItem) ->{
                     switch (MenuItem.getItemId()){
                         case R.id.homeid :
-                             this.showFragment(homeFragment);
+                              homeFrag home = new homeFrag();
+                             this.showFragment(home);
                         break;
 
                         case R.id.map:
@@ -76,7 +79,11 @@ public class inicioActivity extends AppCompatActivity {
                         break;
 
                         case R.id.veterinariaid:
-                        this.showFragment(vetFragment);
+
+                            String key2 = getIntent().getStringExtra("key2");
+                            Log.e(">>>>>>>>>","key 2 tiene :"+key2);
+                            //observerName.onsetName(key2);
+                            this.showFragment(vetFragment);
                         break;
 
                         case R.id.messageid:

@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RegisterActivity2 registerActivity2;
     //private FormAppActivity formAppActivity;
 
+    private inicioActivity iniActivity;
+    private vetFrag vetFragment;
 
 
 
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerActivity = new RegisterActivity();
         registerActivity2 = new RegisterActivity2();
 
+        iniActivity = new inicioActivity();
+        vetFragment = iniActivity.getvetFragment();
 
        // formAppActivity = new FormAppActivity();
 
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
     }
 
 
@@ -117,11 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
-    public void generateSharedPreferences(){
-
-
-    }
 
 
     @Override
@@ -163,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                           resp = true;
                           Intent intent = new Intent(this, inicioActivity.class);
                           intent.putExtra("key1","loginvet");
+                          intent.putExtra("key2",userName.getText().toString());
+                         Log.e(">>>>>>>>>>","KEY 2 EN VET ES :"+userName.getText().toString());
                           startActivity(intent);
 
                      }
@@ -193,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         resp = true;
                         Intent intent = new Intent(this, inicioActivity.class);
                         intent.putExtra("key1","loginuser");
+                        intent.putExtra("key2",userName.getText().toString());
                         startActivity(intent);
 
                     }

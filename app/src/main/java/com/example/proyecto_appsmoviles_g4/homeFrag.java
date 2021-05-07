@@ -54,8 +54,9 @@ public class homeFrag extends Fragment implements SearchView.OnQueryTextListener
         listVet.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         db = FirebaseFirestore.getInstance();
-        this.getData("*");
 
+
+        this.getData("*");
         this.initListener();
 
         //scrolling event
