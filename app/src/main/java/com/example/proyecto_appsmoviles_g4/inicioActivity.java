@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -24,6 +25,7 @@ public class inicioActivity extends AppCompatActivity {
     private BottomNavigationView navigationView;
     private inicioActivity inicioActivity;
 
+    private String key1glo = "";
 
 
 
@@ -46,9 +48,6 @@ public class inicioActivity extends AppCompatActivity {
 
 
           //vista de items del navigation
-          navigationView.getMenu().getItem(2).setVisible(true);
-
-
 
 
           //patron observer para enviar dirección
@@ -58,6 +57,7 @@ public class inicioActivity extends AppCompatActivity {
 
            showFragment(homeFragment);
 
+        this.sharedPreference();
 
 
 
@@ -70,13 +70,12 @@ public class inicioActivity extends AppCompatActivity {
                         break;
 
                         case R.id.map:
-                            SharedPreferences sp = getSharedPreferences("mapOnlyview",MODE_PRIVATE);
-                            sp.edit().putString("key1","mapOnlyview").apply();
+                            SharedPreferences sp3 = getSharedPreferences("mapOnlyview",MODE_PRIVATE);
+                            sp3.edit().putString("key1","mapOnlyview").apply();
                             this.showFragment(mapFragment);
                         break;
 
                         case R.id.veterinariaid:
-
                         this.showFragment(vetFragment);
                         break;
 
@@ -97,6 +96,18 @@ public class inicioActivity extends AppCompatActivity {
 
     }
 
+    public void sharedPreference(){
+
+        key1glo = getIntent().getStringExtra("key1");
+
+        if(key1glo.equals("loginvet")){
+            navigationView.getMenu().getItem(2).setVisible(true);
+
+        }else if(key1glo.equals("loginuser")) {
+            navigationView.getMenu().getItem(2).setVisible(false);
+        }
+
+    }
 
     public void showFragment(Fragment fragment){
         FragmentManager fragmentManager =  getSupportFragmentManager();

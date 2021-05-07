@@ -6,12 +6,15 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +29,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText userPassword;
     private Button logInButton;
     private TextView regiterButton;
+    private Spinner spinner;
 
     private FirebaseFirestore db;
     private boolean resp;
+    private boolean resp2;
+    private String vetOrUser ="";
 
     private RegisterActivity registerActivity;
     private RegisterActivity2 registerActivity2;
     //private FormAppActivity formAppActivity;
+
+
 
 
 
@@ -43,10 +51,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        resp2 = false;
 
         //Instancias de las actividades
         registerActivity = new RegisterActivity();
         registerActivity2 = new RegisterActivity2();
+
+
        // formAppActivity = new FormAppActivity();
 
 
@@ -54,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userPassword = findViewById(R.id.userPassword);
         logInButton = findViewById(R.id.logInButton);
         regiterButton = findViewById(R.id.RegisterButton);
+        spinner = findViewById(R.id.spinner);
+
+        String[] elements = {"Veterinaria","Dueño de mascota"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,elements);
+        spinner.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
@@ -82,7 +98,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
      switch (v.getId()) {
             case R.id.logInButton:
-                this.login();
+
+                if(spinner.getSelectedItem().equals("Veterinaria")){
+                    loginVet();
+
+
+               }else if (spinner.getSelectedItem().equals("Dueño de mascota")){
+                    loginUser();
+               }
              break;
 
          case R.id.RegisterButton:
@@ -94,6 +117,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+    public void generateSharedPreferences(){
+
+
+    }
 
 
     @Override
@@ -117,13 +145,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-     public boolean login(){
+     public boolean loginVet(){
 
          //mirar si usuario existe
          db.collection("vet")
                  .whereEqualTo("name",userName.getText().toString())
                  .whereEqualTo("password",userPassword.getText().toString())
                  .get().addOnSuccessListener(
+
                  query -> {
                      if(query.getDocuments().size()==0){
                          resp = false;
@@ -133,7 +162,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                      }else{
                           resp = true;
                           Intent intent = new Intent(this, inicioActivity.class);
-                         startActivity(intent);
+                          intent.putExtra("key1","loginvet");
+                          startActivity(intent);
 
                      }
                  }
@@ -143,4 +173,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
  }
 
 
+
+    public boolean loginUser(){
+
+        //mirar si usuario existe
+        db.collection("users")
+                .whereEqualTo("name",userName.getText().toString())
+                .whereEqualTo("password",userPassword.getText().toString())
+                .get().addOnSuccessListener(
+
+                query -> {
+                    if(query.getDocuments().size()==0){
+                        resp = false;
+                        Toast.makeText(this, "Usuario o contraseña invalidos por favor intente de nuevo", Toast.LENGTH_LONG).show();
+                        userName.setText("");
+                        userPassword.setText("");
+                    }else{
+                        vetOrUser = "user" ;
+                        resp = true;
+                        Intent intent = new Intent(this, inicioActivity.class);
+                        intent.putExtra("key1","loginuser");
+                        startActivity(intent);
+
+                    }
+                }
+        );
+
+        return resp;
+    }
+
+
+
+
 }
+
