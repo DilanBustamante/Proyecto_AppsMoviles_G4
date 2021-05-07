@@ -337,7 +337,7 @@ public class mapFrag extends Fragment implements  OnMapReadyCallback, LocationLi
 
     @Override
     public void onNewkey(String key2) {
-      mMap.setOnMapLongClickListener(null);
+      //mMap.setOnMapLongClickListener(null);
       this.key2 = key2;
     }
 

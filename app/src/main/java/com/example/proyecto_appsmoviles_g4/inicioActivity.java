@@ -48,10 +48,6 @@ public class inicioActivity extends AppCompatActivity {
           navigationView =findViewById(R.id.navigator);
 
 
-
-          //vista de items del navigation
-
-
           //patron observer para enviar dirección
            mapFragment.setObserver(vetFragment);
 
@@ -59,7 +55,7 @@ public class inicioActivity extends AppCompatActivity {
 
            showFragment(homeFragment);
 
-        this.sharedPreference();
+           this.ExtrasValidation();
 
 
 
@@ -79,10 +75,7 @@ public class inicioActivity extends AppCompatActivity {
                         break;
 
                         case R.id.veterinariaid:
-
                             String key2 = getIntent().getStringExtra("key2");
-                            Log.e(">>>>>>>>>","key 2 tiene :"+key2);
-                            //observerName.onsetName(key2);
                             this.showFragment(vetFragment);
                         break;
 
@@ -103,7 +96,7 @@ public class inicioActivity extends AppCompatActivity {
 
     }
 
-    public void sharedPreference(){
+    public void ExtrasValidation(){
 
         key1glo = getIntent().getStringExtra("key1");
 

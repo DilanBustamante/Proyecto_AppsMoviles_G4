@@ -112,7 +112,10 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
 
 
+
+
     public void setStringkey(OnNewKey observer){
+
         this.observerkey = observer;
     }
 

@@ -89,7 +89,7 @@ public class homeFrag extends Fragment implements SearchView.OnQueryTextListener
     public void getData(String inicio){
         db.collection("vet")
                 .orderBy("name")
-                .limit(4)
+                .limit(5)
                 .startAfter(inicio)
                 .get().addOnSuccessListener(
                 command -> {
