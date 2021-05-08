@@ -13,12 +13,11 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/foto"
         app:layout_constraintEnd_toStartOf="@+id/nameVetTxt"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/foto" />
+        app:srcCompat="@drawable/foto" />
 
     <TextView
         android:id="@+id/nameVetTxt"
@@ -36,12 +35,12 @@
 
     <Button
         android:id="@+id/buttonInformation"
-        android:layout_width="161dp"
-        android:layout_height="39dp"
+        android:layout_width="174dp"
+        android:layout_height="48dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
-        android:text="Editar información"
+        android:text="Actualizar información"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageUser"
@@ -65,7 +64,7 @@
         android:id="@+id/buttonPhone"
         android:layout_width="48dp"
         android:layout_height="49dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:background="#00FFFFFF"
         android:text="Button"
         app:icon="@drawable/telefono"
@@ -73,8 +72,7 @@
         app:iconTint="@android:color/holo_orange_dark"
         app:layout_constraintBottom_toBottomOf="@+id/userPhoneTxt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/userPhoneTxt"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/userPhoneTxt" />
 
     <TextView
         android:id="@+id/vetAddress"
@@ -91,24 +89,10 @@
         app:layout_constraintTop_toBottomOf="@+id/imageUser" />
 
     <TextView
-        android:id="@+id/userPhoneTxt"
-        android:layout_width="228dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="105dp"
-        android:hint="Teléfono"
-        android:padding="10dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonPhone"
-        app:layout_constraintTop_toBottomOf="@+id/vetAddress" />
-
-    <TextView
         android:id="@+id/textView7"
         android:layout_width="304dp"
         android:layout_height="63dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:padding="10dp"
         android:text="Horarios de atención"
         android:textAlignment="center"
@@ -117,6 +101,45 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userPhoneTxt" />
+
+    <TextView
+        android:id="@+id/txtImage"
+        android:layout_width="138dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/vetAddress"
+        app:layout_constraintEnd_toStartOf="@+id/nameVetTxt"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/buttonEditPhone"
+        android:layout_width="49dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="44dp"
+        android:backgroundTint="@color/white"
+        app:icon="@drawable/editar"
+        app:iconTint="#FFC107"
+        app:layout_constraintBottom_toBottomOf="@+id/userPhoneTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/userPhoneTxt"
+        app:layout_constraintTop_toTopOf="@+id/userPhoneTxt" />
+
+    <EditText
+        android:id="@+id/userPhoneTxt"
+        android:layout_width="145dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Telefono"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/buttonPhone"
+        app:layout_constraintTop_toBottomOf="@+id/vetAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

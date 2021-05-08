@@ -2,6 +2,7 @@ package com.example.proyecto_appsmoviles_g4;
 
 public class User {
 
+    private String id;
     private String name;
     private String phone;
     private String pathImage;
@@ -12,7 +13,8 @@ public class User {
 
 
 
-    public User(String name, String phone, String pathImage, String password,String validatePassword, String email) {
+    public User(String id , String name, String phone, String pathImage, String password,String validatePassword, String email) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.pathImage = pathImage;
@@ -76,5 +78,13 @@ public class User {
 
     public void setValidatePassword(String validatePassword) {
         this.validatePassword = validatePassword;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

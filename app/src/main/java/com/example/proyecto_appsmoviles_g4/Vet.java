@@ -2,6 +2,8 @@ package com.example.proyecto_appsmoviles_g4;
 
 public class Vet {
 
+
+  private String id;
   private String Name;
   private String address;
   private String phone;
@@ -16,8 +18,9 @@ public class Vet {
   private String validatePassword;
 
 
-    public Vet(String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword) {
-        Name = name;
+    public Vet(String id,String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword) {
+        this.id = id;
+        this.Name = name;
         this.address = address;
         this.phone = phone;
         this.latitud = latitud;
@@ -126,5 +129,11 @@ public class Vet {
         this.validatePassword = validatePassword;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

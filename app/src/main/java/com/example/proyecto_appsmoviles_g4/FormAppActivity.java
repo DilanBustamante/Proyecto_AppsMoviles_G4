@@ -63,7 +63,7 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.buttonRegisterForm:
 
-
+                String id =  UUID.randomUUID().toString();
                 String name = nameForm.getText().toString();
                 String phone = phoneForm.getText().toString();
                 String emailU = email.getText().toString();
@@ -71,7 +71,7 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
                 String paswVal = validatePassForm.getText().toString();
 
                 if (response.equals(VET_RESPONSE)) {
-                    Vet vet = new Vet(name, "", phone, 0.0, 0.0, "", 0, "", emailU, passw, paswVal);
+                    Vet vet = new Vet(id , name, "", phone, 0.0, 0.0, "", 0, "", emailU, passw, paswVal);
                     if (!name.equals("") && !phone.equals("") && !emailU.equals("") && passw.equals(paswVal)) {
 
                         this.RegisterVet(vet);
@@ -82,7 +82,7 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
 
                 } else if (response.equals(USER_RESPONSE)) {
 
-                    User user = new User(name, phone, "", passw, paswVal, emailU);
+                    User user = new User(id,name, phone, "", passw, paswVal, emailU);
                     if (!name.equals("") && !phone.equals("") && !emailU.equals("") && passw.equals(paswVal)) {
 
                         this.RegisterUser(user);
@@ -107,8 +107,7 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
                         query -> {
                           if(query.getDocuments().size()==0){
 
-                              String id = UUID.randomUUID().toString();
-                              db.collection("users").document(id).set(user);
+                              db.collection("users").document(user.getId()).set(user);
                               Toast.makeText(this, "Usuario Dueño de mascota creado : ", Toast.LENGTH_LONG).show();
                               this.GoToLoginActivity();
 
@@ -133,8 +132,7 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
                 query -> {
                     if(query.getDocuments().size()==0){
                         Toast.makeText(this, "Veterinaria creada : " , Toast.LENGTH_LONG).show();
-                        String id = UUID.randomUUID().toString();
-                        db.collection("vet").document(id).set(vet);
+                        db.collection("vet").document(vet.getId()).set(vet);
                         this.GoToLoginActivity();
 
                     }else{
