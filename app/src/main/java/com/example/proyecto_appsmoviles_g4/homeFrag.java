@@ -107,6 +107,7 @@ public class homeFrag extends Fragment implements SearchView.OnQueryTextListener
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+
         return false;
     }
 

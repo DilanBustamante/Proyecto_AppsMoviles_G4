@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class FormAppActivity extends AppCompatActivity implements View.OnClickListener {
@@ -69,9 +70,11 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
                 String emailU = email.getText().toString();
                 String passw = passwordForm.getText().toString();
                 String paswVal = validatePassForm.getText().toString();
+                ArrayList<String> services = new ArrayList<>();
+
 
                 if (response.equals(VET_RESPONSE)) {
-                    Vet vet = new Vet(id , name, "", phone, 0.0, 0.0, "", 0, "", emailU, passw, paswVal);
+                    Vet vet = new Vet(id , name, "", phone, 0.0, 0.0, "", 0, "", emailU, passw, paswVal,services);
                     if (!name.equals("") && !phone.equals("") && !emailU.equals("") && passw.equals(paswVal)) {
 
                         this.RegisterVet(vet);

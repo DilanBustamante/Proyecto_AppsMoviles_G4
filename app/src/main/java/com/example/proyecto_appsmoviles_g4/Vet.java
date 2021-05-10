@@ -1,5 +1,7 @@
 package com.example.proyecto_appsmoviles_g4;
 
+import java.util.ArrayList;
+
 public class Vet {
 
 
@@ -13,12 +15,15 @@ public class Vet {
   private int score;
   private String status;
 
+  private ArrayList<String> services;
+
+
   private String email;
   private String password;
   private String validatePassword;
 
 
-    public Vet(String id,String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword) {
+    public Vet(String id,String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword,ArrayList<String> services) {
         this.id = id;
         this.Name = name;
         this.address = address;
@@ -31,6 +36,7 @@ public class Vet {
         this.email = email;
         this.password = password;
         this.validatePassword = validatePassword;
+        this.services = services;
     }
 
 
@@ -127,6 +133,14 @@ public class Vet {
 
     public void setValidatePassword(String validatePassword) {
         this.validatePassword = validatePassword;
+    }
+
+    public ArrayList<String> getServices() {
+        return services;
+    }
+
+    public void setServices(ArrayList<String> services) {
+        this.services = services;
     }
 
     public String getId() {
