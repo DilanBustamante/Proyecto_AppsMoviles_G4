@@ -58,6 +58,7 @@ public class ServicesVetRow extends RecyclerView.ViewHolder implements View.OnCl
 
         description.setEnabled(false);
         price.setEnabled(false);
+        accept.setEnabled(false);
 
     }
 
@@ -112,6 +113,7 @@ public class ServicesVetRow extends RecyclerView.ViewHolder implements View.OnCl
 
             description.setEnabled(true);
             price.setEnabled(true);
+            accept.setEnabled(true);
 
         }else if(v.getId()== R.id.buttonAccept){
 
@@ -125,8 +127,8 @@ public class ServicesVetRow extends RecyclerView.ViewHolder implements View.OnCl
 
 
             description.setEnabled(false);
-            price.setEnabled(false
-            );
+            price.setEnabled(false);
+            accept.setEnabled(false);
         }
 
 

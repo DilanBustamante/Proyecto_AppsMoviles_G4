@@ -40,17 +40,22 @@
         android:layout_height="41dp"
         android:layout_marginStart="10dp"
         android:backgroundTint="@android:color/holo_orange_dark"
+        app:icon="@drawable/editar"
         app:layout_constraintBottom_toBottomOf="@+id/textServiceprice"
         app:layout_constraintStart_toEndOf="@+id/textServiceprice"
         app:layout_constraintTop_toTopOf="@+id/textServiceprice" />
 
     <Button
         android:id="@+id/buttonAccept"
-        android:layout_width="42dp"
+        android:layout_width="49dp"
         android:layout_height="41dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="36dp"
         android:backgroundTint="@android:color/holo_orange_dark"
+        android:textAlignment="center"
+        app:icon="@drawable/save1"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonEditService"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
