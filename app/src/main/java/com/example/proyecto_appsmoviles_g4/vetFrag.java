@@ -71,6 +71,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     private ArrayList<String> photosAux;
 
 
+
     public vetFrag() {
         // Required empty public constructor
         addressGlo = "";
@@ -122,8 +123,6 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         adapterPhotos.notifyDataSetChanged();
 
 
-
-
         //pasar adaptadores a los recyclers y pasar managers
         servicesRecycler.setAdapter(adapter);
         servicesRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -164,6 +163,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
             AddresVetxt.setText(addressGlo);
         }
 
+        editInformation.setEnabled(true);
 
         return root;
     }
@@ -173,8 +173,10 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         switch (v.getId()) {
             case R.id.buttonAddPlace:
                 Toast.makeText(getActivity(), "Agrega la ubicación de tu veterinaria", Toast.LENGTH_LONG).show();
-
                 observerkey.onNewkey("normalMap");
+
+                editInformation.setEnabled(true);
+                this.UpdateBlankAddress();
                 inicioActivity activity = (inicioActivity) getActivity();
                 activity.showFragment(activity.getmapFragment());
 
@@ -182,23 +184,32 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
                 break;
 
             case R.id.buttonInformation:
+                editInformation.setEnabled(false);
                 this.UpdateData();
                 phoneNumber.setEnabled(false);
                 Toast.makeText(getActivity(), "Datos actualizados", Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.txtImage:
+
+                editInformation.setEnabled(true);
+
+                valueProfilePhoto = "onlyProfilePhoto";
+
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/*");
                 startActivityForResult(i, GALLERY_CALLBACK);
                 break;
 
             case R.id.buttonEditPhone:
+                editInformation.setEnabled(true);
                 Toast.makeText(getActivity(), "Por favor edita tu telefono", Toast.LENGTH_SHORT).show();
                 phoneNumber.setEnabled(true);
                 break;
 
             case R.id.buttonAddRow:
+                editInformation.setEnabled(true);
+
                 if(servicesAux.isEmpty()){
                     this.addNewRow();
                     servicesRecycler.setAdapter(adapter);
@@ -279,21 +290,19 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
 
     public void UpdateData(){
-
-
-        String address = AddresVetxt.getText().toString();
         String name = nameVet.getText().toString();
         String phone = phoneNumber.getText().toString();
-
+        String address = AddresVetxt.getText().toString();
 
         db.collection("vet").whereEqualTo("name",name).get().addOnSuccessListener(
                 query ->{
                     if(query.getDocuments().size()>0){
                         Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
-                        updateVet.setAddress(address);
                         updateVet.setPathImage(path);
                         updateVet.setPhone(phone);
+                        updateVet.setAddress(address);
                         this.addServiceBD();
+
                         db.collection("vet").document(updateVet.getId()).set(updateVet);
 
                     }
@@ -301,6 +310,27 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         );
 
     }
+
+
+
+    public void UpdateBlankAddress(){
+        String name = nameVet.getText().toString();
+        String address = "";
+
+        db.collection("vet").whereEqualTo("name",name).get().addOnSuccessListener(
+                query ->{
+                    if(query.getDocuments().size()>0){
+                        Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
+                        updateVet.setAddress(address);
+                        db.collection("vet").document(updateVet.getId()).set(updateVet);
+
+                    }
+                }
+        );
+
+    }
+
+
 
 
     public void getPhoneBD(){
@@ -414,33 +444,49 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
 
 
+private String valueProfilePhoto = "";
 
     public void addServiceBD(){
-
+        //this.refreshList();
         SharedPreferences sp = this.getActivity().getSharedPreferences("service",MODE_PRIVATE);
         String s = sp.getString("serviceKey","nokeyService");
-        String name = nameVet.getText().toString();
-        servicesAux.add(s);
 
 
-        if(!s.equals("nokeyService")) {
+     if(valueProfilePhoto.equals("onlyProfilePhoto"))  {
 
-            db.collection("vet").whereEqualTo("name", name).get().addOnSuccessListener(
-                    query -> {
-                        if (query.getDocuments().size() > 0) {
-                            Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
+         s = "nokeyService";
+         valueProfilePhoto = "";
 
-                            updateVet.setServices(servicesAux);
-                            db.collection("vet").document(updateVet.getId()).set(updateVet);
+     }else{
 
-                            adapter = new ServicesVetAdapter(servicesAux);
-                            adapter.notifyDataSetChanged();
+         valueProfilePhoto = "";
 
-                            }
-                    }
-            );
+         String name = nameVet.getText().toString();
 
-        }
+         if(!s.equals("nokeyService")) {
+
+             servicesAux.add(s);
+
+             db.collection("vet").whereEqualTo("name", name).get().addOnSuccessListener(
+                     query -> {
+                         if (query.getDocuments().size() > 0) {
+                             Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
+
+                             updateVet.setServices(servicesAux);
+                             db.collection("vet").document(updateVet.getId()).set(updateVet);
+
+                             adapter = new ServicesVetAdapter(servicesAux);
+                             adapter.notifyDataSetChanged();
+
+                         }
+                     }
+             );
+
+         }
+
+     }
+
+
 
     }
 
