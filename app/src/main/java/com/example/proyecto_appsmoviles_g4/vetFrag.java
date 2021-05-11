@@ -118,6 +118,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         adapter.notifyDataSetChanged();
 
         adapterPhotos = new AdapterPhotosVet(photosVetGalery);
+        adapterPhotos.clear();
         adapterPhotos.notifyDataSetChanged();
 
 
