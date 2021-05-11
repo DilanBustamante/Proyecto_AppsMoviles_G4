@@ -7,11 +7,13 @@
     android:padding="10dp">
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -129,15 +131,13 @@
                 android:id="@+id/textView11"
                 android:layout_width="304dp"
                 android:layout_height="63dp"
-                android:layout_marginTop="95dp"
-                android:layout_marginBottom="100dp"
+                android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:text="Mis fotos"
                 android:textAlignment="center"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/servicesRecycler" />
 
@@ -196,8 +196,8 @@
                 android:id="@+id/servicesRecycler"
                 android:layout_width="359dp"
                 android:layout_height="222dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="95dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView11"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.524"
@@ -252,6 +252,30 @@
                 app:layout_constraintStart_toEndOf="@+id/textView13"
                 app:layout_constraintTop_toTopOf="@+id/textView13"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photosRecycler"
+                android:layout_width="348dp"
+                android:layout_height="285dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginBottom="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <Button
+                android:id="@+id/addPhotoButton"
+                android:layout_width="72dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="250dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="59dp"
+                android:text="Button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

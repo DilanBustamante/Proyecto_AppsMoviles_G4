@@ -48,6 +48,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     private TextView txtImage;
     private Button editPhone;
     private Button addRow;
+    private Button addPhotoButton;
 
 
     private ArrayList<String> servicesAux;
@@ -63,12 +64,20 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     private FirebaseFirestore db;
 
 
+    public static final int GALLERY_CALLBACK2 = 14;
+    private RecyclerView photosRecycler;
+    private AdapterPhotosVet adapterPhotos;
+    private ArrayList<String> photosVetGalery;
+    private ArrayList<String> photosAux;
+
 
     public vetFrag() {
         // Required empty public constructor
         addressGlo = "";
         services = new ArrayList<>();
         servicesAux = new ArrayList<>();
+        photosVetGalery = new ArrayList<>();
+        photosAux = new ArrayList<>();
 
     }
 
@@ -98,15 +107,28 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         txtImage = root.findViewById(R.id.txtImage);
         editPhone = root.findViewById(R.id.buttonEditPhone);
         servicesRecycler = root.findViewById(R.id.servicesRecycler);
+        photosRecycler = root.findViewById(R.id.photosRecycler);
+        addPhotoButton = root.findViewById(R.id.addPhotoButton);
 
 
+
+        //inicializar adapters
         adapter = new ServicesVetAdapter(services);
+        adapter.clear();
         adapter.notifyDataSetChanged();
 
+        adapterPhotos = new AdapterPhotosVet(photosVetGalery);
+        adapterPhotos.notifyDataSetChanged();
+
+
+
+
+        //pasar adaptadores a los recyclers y pasar managers
         servicesRecycler.setAdapter(adapter);
         servicesRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-
+        photosRecycler.setAdapter(adapterPhotos);
+        photosRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
 
 
@@ -117,6 +139,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         txtImage.setOnClickListener(this);
         editPhone.setOnClickListener(this);
         addRow.setOnClickListener(this);
+        addPhotoButton.setOnClickListener(this);
 
         phoneNumber.setEnabled(false);
 
@@ -128,13 +151,11 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         db = FirebaseFirestore.getInstance();
 
 
-
-
         this.getPhoneBD();
         this.getImageBD();
         this.getAddressBD();
         this.getServicesBD();
-
+        this.getPhotosGaleryBD();
 
 
 
@@ -189,16 +210,19 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
                     adapter.notifyDataSetChanged();
                 }
                break;
+
+
+            case R.id.addPhotoButton:
+
+                Intent j = new Intent(Intent.ACTION_GET_CONTENT);
+                j.setType("image/*");
+                startActivityForResult(j, GALLERY_CALLBACK2);
+
+            break;
+
         }
     }
 
-    public void update(){
-
-        for(int i = 0; i< adapter.getItemCount();i++){
-
-        }
-
-    }
 
 
     public void addNewRow() {
@@ -236,7 +260,19 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
             Bitmap image1 = BitmapFactory.decodeFile(path);
             image.setImageBitmap(image1);
 
+        }else if(resultCode==RESULT_OK && requestCode == GALLERY_CALLBACK2) {
+
+            Uri uri = data.getData();
+            path = UtilDomi.getPath(getActivity(), uri);
+
+            this.addPhotoBD(path);
+            this.addRowWitPhoto(path);
+
+            photosRecycler.setAdapter(adapterPhotos);
+            adapterPhotos.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "Imagen guardada", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 
@@ -342,12 +378,38 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
 
 
+    public void getPhotosGaleryBD(){
 
-//    public void setService(String service) {
-//       serviceGlo = service;
-//    }
+        String name = nameVet.getText().toString();
+        db.collection("vet").whereEqualTo("name",name).get().addOnSuccessListener(
+                query ->{
+                    if(query.getDocuments().size()>0){
+                        Vet vet = query.getDocuments().get(0).toObject(Vet.class);
+
+                        ArrayList<String> photosBD = vet.getPhotosPaths();
+                        photosAux = photosBD;
+                        adapterPhotos = new AdapterPhotosVet(photosBD);
+                        adapterPhotos.notifyDataSetChanged();
+
+                        for(int i = 0;i<photosBD.size();i++){
+                            this.addRowWitPhoto( photosBD.get(i).toString());
+                        }
+                        photosRecycler.setAdapter(adapterPhotos);
+                        photosRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                    }
+                }
+        );
+
+    }
 
 
+
+       public void addRowWitPhoto(String photoGalery){
+           photosVetGalery.add(photoGalery);
+           adapterPhotos = new AdapterPhotosVet(photosVetGalery);
+           adapterPhotos.notifyDataSetChanged();
+
+       }
 
 
 
@@ -382,6 +444,52 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     }
 
 
+
+    public void addPhotoBD(String path){
+
+
+        String name = nameVet.getText().toString();
+        photosAux.add(path);
+
+        if(!path.equals("")) {
+
+            db.collection("vet").whereEqualTo("name", name).get().addOnSuccessListener(
+                    query -> {
+                        if (query.getDocuments().size() > 0) {
+                            Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
+
+                            updateVet.setPhotosPaths(photosAux);
+                            db.collection("vet").document(updateVet.getId()).set(updateVet);
+
+                            adapterPhotos = new AdapterPhotosVet(photosAux);
+                            adapterPhotos.notifyDataSetChanged();
+
+                        }
+                    }
+            );
+
+        }
+
+
+
+    }
+
+
+     public void refreshListPhotos(){
+        adapterPhotos.clear();
+        photosAux.clear();
+        adapterPhotos.getPhotos().clear();
+
+        this.getPhotosGaleryBD();
+        photosVetGalery = photosAux;
+
+        adapterPhotos = new AdapterPhotosVet(photosVetGalery);
+        adapterPhotos.notifyDataSetChanged();
+
+    }
+
+
+
     public void refreshList(){
         adapter.clear();
         servicesAux.clear();
@@ -393,7 +501,6 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         adapter.notifyDataSetChanged();
 
     }
-
 
 
 

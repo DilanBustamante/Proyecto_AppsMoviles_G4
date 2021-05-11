@@ -16,14 +16,14 @@ public class Vet {
   private String status;
 
   private ArrayList<String> services;
-
+private ArrayList<String> photosPaths;
 
   private String email;
   private String password;
   private String validatePassword;
 
 
-    public Vet(String id,String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword,ArrayList<String> services) {
+    public Vet(String id,String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword,ArrayList<String> services ,ArrayList<String>photosPaths) {
         this.id = id;
         this.Name = name;
         this.address = address;
@@ -37,6 +37,7 @@ public class Vet {
         this.password = password;
         this.validatePassword = validatePassword;
         this.services = services;
+        this.photosPaths = photosPaths;
     }
 
 
@@ -149,5 +150,14 @@ public class Vet {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+
+    public ArrayList<String> getPhotosPaths() {
+        return photosPaths;
+    }
+
+    public void setPhotosPaths(ArrayList<String> photosPaths) {
+        this.photosPaths = photosPaths;
     }
 }
