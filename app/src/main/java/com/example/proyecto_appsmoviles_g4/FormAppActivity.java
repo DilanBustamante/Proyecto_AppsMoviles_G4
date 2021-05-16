@@ -72,10 +72,11 @@ public class FormAppActivity extends AppCompatActivity implements View.OnClickLi
                 String paswVal = validatePassForm.getText().toString();
                 ArrayList<String> services = new ArrayList<>();
                 ArrayList<String> photosPaths = new ArrayList<>();
+                ArrayList<String> hours = new ArrayList<>();
 
 
                 if (response.equals(VET_RESPONSE)) {
-                    Vet vet = new Vet(id , name, "", phone, 0.0, 0.0, "", 0, "", emailU, passw, paswVal,services,photosPaths);
+                    Vet vet = new Vet(id , name, "", phone, 0.0, 0.0, "", 0, "", emailU, passw, paswVal,services,photosPaths,hours);
                     if (!name.equals("") && !phone.equals("") && !emailU.equals("") && passw.equals(paswVal)) {
 
                         this.RegisterVet(vet);

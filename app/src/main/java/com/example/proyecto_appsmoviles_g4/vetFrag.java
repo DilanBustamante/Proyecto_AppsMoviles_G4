@@ -18,16 +18,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import io.grpc.Server;
@@ -70,6 +75,21 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     private ArrayList<String> photosVetGalery;
     private ArrayList<String> photosAux;
 
+    private String valueProfilePhoto = "";
+
+    private EditText hours1;
+    private EditText hours2;
+    private EditText hours3;
+    private EditText hours4;
+    private EditText hours5;
+    private EditText hours6;
+    private EditText hours7;
+
+    private Button buttonEditHours;
+    private Button buttonSaveHours;
+
+    private ArrayList<String> hours;
+
 
 
     public vetFrag() {
@@ -79,6 +99,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         servicesAux = new ArrayList<>();
         photosVetGalery = new ArrayList<>();
         photosAux = new ArrayList<>();
+        hours = new ArrayList<>();
 
     }
 
@@ -110,6 +131,28 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         servicesRecycler = root.findViewById(R.id.servicesRecycler);
         photosRecycler = root.findViewById(R.id.photosRecycler);
         addPhotoButton = root.findViewById(R.id.addPhotoButton);
+        buttonEditHours = root.findViewById(R.id.buttonEditHours);
+        buttonSaveHours = root.findViewById(R.id.buttonSaveHours);
+
+        hours1 = root.findViewById(R.id.hours1);
+        hours2 = root.findViewById(R.id.hours2);
+        hours3 = root.findViewById(R.id.hours3);
+        hours4 = root.findViewById(R.id.hours4);
+        hours5 = root.findViewById(R.id.hours5);
+        hours6 = root.findViewById(R.id.hours6);
+        hours7 = root.findViewById(R.id.hours7);
+
+
+        hours1.setEnabled(false);
+        hours2.setEnabled(false);
+        hours3.setEnabled(false);
+        hours4.setEnabled(false);
+        hours5.setEnabled(false);
+        hours6.setEnabled(false);
+        hours7.setEnabled(false);
+
+
+
 
 
 
@@ -140,6 +183,9 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         editPhone.setOnClickListener(this);
         addRow.setOnClickListener(this);
         addPhotoButton.setOnClickListener(this);
+        buttonEditHours.setOnClickListener(this);
+        buttonSaveHours.setOnClickListener(this);
+
 
         phoneNumber.setEnabled(false);
 
@@ -151,11 +197,18 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         db = FirebaseFirestore.getInstance();
 
 
-        this.getPhoneBD();
-        this.getImageBD();
-        this.getAddressBD();
-        this.getServicesBD();
-        this.getPhotosGaleryBD();
+        try{
+            this.getPhoneBD();
+            this.getImageBD();
+            this.getAddressBD();
+            this.getServicesBD();
+            this.getPhotosGaleryBD();
+            this.getHoursBD();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
 
@@ -232,6 +285,34 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
             break;
 
+            case R.id.buttonEditHours:
+
+                hours1.setEnabled(true);
+                hours2.setEnabled(true);
+                hours3.setEnabled(true);
+                hours4.setEnabled(true);
+                hours5.setEnabled(true);
+                hours6.setEnabled(true);
+                hours7.setEnabled(true);
+                Toast.makeText(getActivity(), "Edita las horas como se indica, si no prestarás servicio un dia, deja el espacio en blanco", Toast.LENGTH_LONG).show();
+
+            break;
+
+            case R.id.buttonSaveHours:
+                this.CleanHoursBD();
+                this.hours.clear();
+                this.addHoursBD();
+
+                hours1.setEnabled(false);
+                hours2.setEnabled(false);
+                hours3.setEnabled(false);
+                hours4.setEnabled(false);
+                hours5.setEnabled(false);
+                hours6.setEnabled(false);
+                hours7.setEnabled(false);
+
+            break;
+
         }
     }
 
@@ -293,6 +374,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         String name = nameVet.getText().toString();
         String phone = phoneNumber.getText().toString();
         String address = AddresVetxt.getText().toString();
+
 
         db.collection("vet").whereEqualTo("name",name).get().addOnSuccessListener(
                 query ->{
@@ -380,6 +462,74 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
 
 
+    public void getHoursBD(){
+        String name = nameVet.getText().toString();
+        db.collection("vet").whereEqualTo("name",name).get().addOnSuccessListener(
+                query ->{
+                    if(query.getDocuments().size()>0){
+                        Vet vet = query.getDocuments().get(0).toObject(Vet.class);
+                         ArrayList<String> hoursBD = vet.getHours();
+
+                         if(!hoursBD.isEmpty()){
+                             for(int i = 0; i< hoursBD.size();i++){
+                                 String[] array = hoursBD.get(i).split(",");
+
+                                 if (i == 0 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours1.setText(hoursBD.get(i).toString());
+
+                                 }else if(i == 1 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours2.setText(hoursBD.get(i).toString());
+
+                                 }else if(i == 2 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours3.setText(hoursBD.get(i).toString());
+
+                                 }else if(i == 3 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours4.setText(hoursBD.get(i).toString());
+
+                                 }else if(i == 4 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours5.setText(hoursBD.get(i).toString());
+
+                                 }else if(i == 5 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours6.setText(hoursBD.get(i).toString());
+
+                                 }else if(i == 6 && hoursBD.get(i).equals("Sin servicio")) {
+                                     hours7.setText(hoursBD.get(i).toString());
+                                 }
+
+
+                                 if(array[0].equals("Lunes")){
+                                     hours1.setText(array[1]+", a ,"+array[2]);
+
+                                 }else if (array[0].equals("Martes")){
+                                     hours2.setText(array[1]+", a ,"+array[2]);
+
+                                 }else if (array[0].equals("Miercoles")){
+                                     hours3.setText(array[1]+", a ,"+array[2]);
+
+                                 }else if (array[0].equals("Jueves")){
+                                     hours4.setText(array[1]+", a ,"+array[2]);
+
+                                 }else if (array[0].equals("Viernes")){
+                                     hours5.setText(array[1]+", a ,"+array[2]);
+
+                                 }else if (array[0].equals("Sabado")){
+                                     hours6.setText(array[1]+", a ,"+array[2]);
+
+                                 }else if (array[0].equals("Domingo")){
+                                     hours7.setText(array[1]+", a ,"+array[2]);
+                                 }
+
+                             }
+
+
+                         }
+
+                    }
+                }
+        );
+    }
+
+
 
     public void getServicesBD(){
 
@@ -444,29 +594,21 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
 
 
-private String valueProfilePhoto = "";
+
 
     public void addServiceBD(){
         //this.refreshList();
         SharedPreferences sp = this.getActivity().getSharedPreferences("service",MODE_PRIVATE);
         String s = sp.getString("serviceKey","nokeyService");
 
-
      if(valueProfilePhoto.equals("onlyProfilePhoto"))  {
-
          s = "nokeyService";
          valueProfilePhoto = "";
-
      }else{
-
          valueProfilePhoto = "";
-
          String name = nameVet.getText().toString();
-
          if(!s.equals("nokeyService")) {
-
              servicesAux.add(s);
-
              db.collection("vet").whereEqualTo("name", name).get().addOnSuccessListener(
                      query -> {
                          if (query.getDocuments().size() > 0) {
@@ -517,23 +659,210 @@ private String valueProfilePhoto = "";
 
         }
 
+    }
+
+
+
+
+
+    public void validateHours(){
+
+
+        String h1 = hours1.getText().toString();
+        String h2 = hours2.getText().toString();
+        String h3 =hours3.getText().toString();
+        String h4 =hours4.getText().toString();
+        String h5 =hours5.getText().toString();
+        String h6 =hours6.getText().toString();
+        String h7 =hours7.getText().toString();
+
+
+        String[] hA1 = h1.split(",");
+        String[] hA2 = h2.split(",");
+        String[] hA3 = h3.split(",");
+        String[] hA4 = h4.split(",");
+        String[] hA5 = h5.split(",");
+        String[] hA6 = h6.split(",");
+        String[] hA7 = h7.split(",");
+
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss a");
+
+
+
+        try {
+
+            String closeValue = "sin servicio";
+
+            if(h1.equals("")){
+                hours.add(0,closeValue);
+            }else{
+                Date date1 = dateFormat1.parse(hA1[0]); //Lunes start
+                Date date2 = dateFormat1.parse(hA1[2]); //Lunes close
+
+                String out1 = dateFormat2.format(date1); //Lunes start
+                String out2 = dateFormat2.format(date2); //Lunes close
+
+                String fh1 = "Lunes,"+out1+","+out2;
+                hours.add(0,fh1);
+            }
+
+            if(h2.equals("")){
+                hours.add(1,closeValue);
+            }else{
+                Date date3 = dateFormat1.parse(hA2[0]); //Martes start
+                Date date4 = dateFormat1.parse(hA2[2]); //Martes close
+
+                String out3 = dateFormat2.format(date3); //Martes start
+                String out4 = dateFormat2.format(date4); //Martes close
+
+                String fh2 = "Martes,"+out3+","+out4;
+                hours.add(1,fh2);
+            }
+
+
+            if(h3.equals("")){
+                hours.add(2,closeValue);
+            }else{
+                Date date5 = dateFormat1.parse(hA3[0]); //Miercoles start
+                Date date6 = dateFormat1.parse(hA3[2]); //Miercoles close
+
+                String out5 = dateFormat2.format(date5); //Miercoles start
+                String out6 = dateFormat2.format(date6); //Miercoles close
+
+                String fh3 = "Miercoles,"+out5+","+out6;
+                hours.add(2,fh3);
+            }
+
+
+            if(h4.equals("")){
+                hours.add(3,closeValue);
+            }else{
+                Date date7 = dateFormat1.parse(hA4[0]); //Jueves start
+                Date date8 = dateFormat1.parse(hA4[2]); //Jueves close
+
+                String out7 = dateFormat2.format(date7); //Jueves start
+                String out8 = dateFormat2.format(date8); //Jueves close
+
+                String fh4 = "Jueves,"+out7+","+out8;
+                hours.add(3,fh4);
+            }
+
+
+            if(h5.equals("")){
+                hours.add(4,closeValue);
+            }else{
+                Date date9 = dateFormat1.parse(hA5[0]); //Viernes start
+                Date date10 = dateFormat1.parse(hA5[2]); //Viernes close
+
+                String out9 = dateFormat2.format(date9); //Viernes start
+                String out10 = dateFormat2.format(date10); //Viernes close
+
+                String fh5 = "Viernes,"+out9+","+out10;
+                hours.add(4,fh5);
+            }
+
+
+            if(h6.equals("")){
+                hours.add(5,closeValue);
+            }else{
+                Date date11 = dateFormat1.parse(hA6[0]); //Sabado start
+                Date date12 = dateFormat1.parse(hA6[2]); //Sabado close
+
+                String out11 = dateFormat2.format(date11); //Sabado start
+                String out12 = dateFormat2.format(date12); //Sabado close
+
+                String fh6 = "Sabado,"+out11+","+out12;
+                hours.add(5,fh6);
+            }
+
+
+            if(h7.equals("")){
+                hours.add(6,closeValue);
+            }else{
+                Date date13 = dateFormat1.parse(hA7[0]); //Sabado start
+                Date date14 = dateFormat1.parse(hA7[2]); //Sabado close
+
+                String out13 = dateFormat2.format(date13); //Domingo start
+                String out14 = dateFormat2.format(date14); //Domingo close
+
+                String fh7 = "Domingo,"+out13+","+out14;
+                hours.add(6,fh7);
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
 
 
     }
 
 
-     public void refreshListPhotos(){
-        adapterPhotos.clear();
-        photosAux.clear();
-        adapterPhotos.getPhotos().clear();
 
-        this.getPhotosGaleryBD();
-        photosVetGalery = photosAux;
+    public void addHoursBD(){
+            String name = nameVet.getText().toString();
+            //if(hours.size()==6){
+                this.validateHours();
+                db.collection("vet").whereEqualTo("name", name).get().addOnSuccessListener(
+                        query -> {
+                            if (query.getDocuments().size() > 0) {
+                                Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
 
-        adapterPhotos = new AdapterPhotosVet(photosVetGalery);
-        adapterPhotos.notifyDataSetChanged();
+                                updateVet.setHours(hours);
+                                db.collection("vet").document(updateVet.getId()).set(updateVet);
+                                Toast.makeText(this.getActivity(),"Se han añadido los horarios",Toast.LENGTH_LONG);
+
+                            }
+                        }
+                );
+           // }
 
     }
+
+
+    public void CleanHoursBD(){
+        String name = nameVet.getText().toString();
+        ArrayList<String> blanckArray = new ArrayList<>();
+        db.collection("vet").whereEqualTo("name", name).get().addOnSuccessListener(
+                query -> {
+                    if (query.getDocuments().size() > 0) {
+                        Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
+                        updateVet.setHours(blanckArray);
+                        db.collection("vet").document(updateVet.getId()).set(updateVet);
+                    }
+                }
+        );
+    }
+
+
+//     public void refreshListPhotos(){
+//        adapterPhotos.clear();
+//        photosAux.clear();
+//        adapterPhotos.getPhotos().clear();
+//
+//        this.getPhotosGaleryBD();
+//        photosVetGalery = photosAux;
+//
+//        adapterPhotos = new AdapterPhotosVet(photosVetGalery);
+//        adapterPhotos.notifyDataSetChanged();
+//
+//    }
+
+
+    public void refreshListHours(){
+        servicesAux.clear();
+        adapter.getServices().clear();
+        this.getServicesBD();
+        services = servicesAux;
+        adapter = new ServicesVetAdapter(services);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
 
 
