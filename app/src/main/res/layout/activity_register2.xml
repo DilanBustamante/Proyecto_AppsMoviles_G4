@@ -24,34 +24,41 @@
 
     <Button
         android:id="@+id/buttonGoogle"
-        style="@style/AppTransparentBtn"
-        android:layout_width="303dp"
+        android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginTop="184dp"
+        android:backgroundTint="@color/secondaryOrange"
+        android:fontFamily="@font/roboto"
         android:text="Registrarme con Google"
+        app:cornerRadius="150px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <Button
         android:id="@+id/buttonFacebook"
-        style="@style/AppTransparentBtn"
         android:layout_width="303dp"
         android:layout_height="45dp"
         android:layout_marginTop="36dp"
+        android:backgroundTint="@color/secondaryOrange"
+        android:fontFamily="@font/roboto"
         android:text="Registrarme con Facebook"
+        app:cornerRadius="150px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGoogle" />
 
     <Button
         android:id="@+id/AppButton"
-        style="@style/AppSecondaryBtn"
-        android:layout_width="303dp"
+        android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="131dp"
+        android:backgroundTint="@color/primaryBlue"
+        android:fontFamily="@font/roboto"
         android:text="Registrarme con la app"
+        android:textColor="@color/white"
+        app:cornerRadius="150px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -24,6 +24,7 @@ public class inicioActivity extends AppCompatActivity {
     private homeFrag homeFragment;
     private mapFrag mapFragment;
     private vetFrag vetFragment;
+    private ProfileFragment profileFragment;
     private BottomNavigationView navigationView;
 
 
@@ -45,6 +46,7 @@ public class inicioActivity extends AppCompatActivity {
         homeFragment = homeFrag.newInstance();
         mapFragment = mapFrag.newInstance();
         vetFragment = vetFrag.newInstance();
+        profileFragment = ProfileFragment.newInstance();
 
 
 
@@ -92,6 +94,7 @@ public class inicioActivity extends AppCompatActivity {
 
 
                         case R.id.profileid:
+                            this.showFragment(profileFragment);
                         break;
                     }
 
