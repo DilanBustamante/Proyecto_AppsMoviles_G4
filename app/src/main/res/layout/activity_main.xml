@@ -8,8 +8,9 @@
 
     <EditText
         android:id="@+id/userName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/AppPrimaryInput"
+        android:layout_width="277dp"
+        android:layout_height="45dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="40dp"
@@ -22,6 +23,7 @@
 
     <EditText
         android:id="@+id/userPassword"
+        style="@style/AppPrimaryInput"
         android:layout_width="279dp"
         android:layout_height="46dp"
         android:layout_marginStart="40dp"
@@ -36,6 +38,7 @@
 
     <Button
         android:id="@+id/logInButton"
+        style="@style/AppPrimaryBtn"
         android:layout_width="280dp"
         android:layout_height="42dp"
         android:layout_marginStart="40dp"
@@ -69,6 +72,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="80dp"
+        android:fontFamily="@font/roboto"
         android:text="No tienes cuenta áun?"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -82,6 +86,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="80dp"
+        android:fontFamily="@font/roboto"
         android:text="Registrate"
         android:textSize="18sp"
         android:textStyle="bold"

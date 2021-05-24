@@ -11,6 +11,7 @@
         android:layout_height="51dp"
         android:layout_marginStart="31dp"
         android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto"
         android:hint="Name Vet"
         android:padding="10dp"
         android:textSize="24sp"
@@ -24,6 +25,7 @@
         android:layout_marginStart="31dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto"
         android:hint="Status Vet"
         android:padding="10dp"
         android:textSize="14sp"
@@ -33,6 +35,7 @@
 
     <Button
         android:id="@+id/buttonWatch"
+        style="@style/AppSecondaryBtn"
         android:layout_width="74dp"
         android:layout_height="43dp"
         android:layout_marginStart="30dp"

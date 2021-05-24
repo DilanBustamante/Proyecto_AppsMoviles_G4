@@ -24,6 +24,7 @@
 
     <Button
         android:id="@+id/buttonGoogle"
+        style="@style/AppTransparentBtn"
         android:layout_width="303dp"
         android:layout_height="45dp"
         android:layout_marginTop="184dp"
@@ -34,6 +35,7 @@
 
     <Button
         android:id="@+id/buttonFacebook"
+        style="@style/AppTransparentBtn"
         android:layout_width="303dp"
         android:layout_height="45dp"
         android:layout_marginTop="36dp"
@@ -44,6 +46,7 @@
 
     <Button
         android:id="@+id/AppButton"
+        style="@style/AppSecondaryBtn"
         android:layout_width="303dp"
         android:layout_height="45dp"
         android:layout_marginTop="80dp"
