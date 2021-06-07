@@ -17,7 +17,7 @@ import android.widget.SearchView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class homeFrag extends Fragment implements SearchView.OnQueryTextListener{
+public class    homeFrag extends Fragment implements SearchView.OnQueryTextListener{
 
 
     private SearchView search;
