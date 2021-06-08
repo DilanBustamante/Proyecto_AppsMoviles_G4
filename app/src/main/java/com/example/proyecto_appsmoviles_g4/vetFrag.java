@@ -8,12 +8,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.storage.StorageManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +29,20 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +68,8 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     private Button editPhone;
     private Button addRow;
     private Button addPhotoButton;
+
+    private StorageReference mstorage;
 
 
     private ArrayList<String> servicesAux;
@@ -116,6 +132,10 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_vet, container, false);
 
+
+        //Instancia storage
+
+        mstorage = FirebaseStorage.getInstance().getReference();
 
         //Instancias los elementos visibles
 
@@ -349,15 +369,51 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
         if (resultCode == RESULT_OK && requestCode == GALLERY_CALLBACK) {
 
             Uri uri = data.getData();
-            path = UtilDomi.getPath(getActivity(), uri);
-            Bitmap image1 = BitmapFactory.decodeFile(path);
-            image.setImageBitmap(image1);
+
+            StorageReference filePath = mstorage.child("images/").child(uri.getLastPathSegment());
+
+            Task upload = filePath.putFile(uri);
+
+            Task<Uri> urlTask = upload.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return filePath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        Glide.with(getContext()).load(downloadUri).into(image);
+                        db.collection("vet").whereEqualTo("name", nameVet.getText().toString()).get().addOnSuccessListener(
+                                query -> {
+                                    if (query.getDocuments().size() > 0) {
+                                        Vet updateVet = query.getDocuments().get(0).toObject(Vet.class);
+                                        updateVet.setPathImage(downloadUri.toString());
+                                        db.collection("vet").document(updateVet.getId()).set(updateVet);
+                                        Toast.makeText(getActivity(),"Se ha actualizado la foto de perfil",Toast.LENGTH_LONG);
+                                    }
+                                }
+                        );
+                        Log.println(Log.DEBUG,"URL",downloadUri.toString());
+                    } else {
+                        // Handle failures
+                        // ...
+                    }
+                }
+            });
+
 
         }else if(resultCode==RESULT_OK && requestCode == GALLERY_CALLBACK2) {
 
             Uri uri = data.getData();
             path = UtilDomi.getPath(getActivity(), uri);
-
+                 /*   */
             this.addPhotoBD(path);
             this.addRowWitPhoto(path);
 
@@ -368,6 +424,20 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
 
     }
 
+    public Bitmap dowloadImage (String image){
+        URL imageUrl = null;
+        Bitmap imagen = null;
+        try{
+            imageUrl = new URL(image);
+            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+            conn.connect();
+            imagen = BitmapFactory.decodeStream(conn.getInputStream());
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+
+        return imagen;
+    }
 
 
     public void UpdateData(){
@@ -436,8 +506,7 @@ public class vetFrag extends Fragment implements View.OnClickListener, mapFrag.O
                         Vet vet = query.getDocuments().get(0).toObject(Vet.class);
                          path = vet.getPathImage();
                          if(!path.isEmpty()){
-                             Bitmap imagevet = BitmapFactory.decodeFile(path);
-                             image.setImageBitmap(imagevet);
+                             Glide.with(getContext()).load(path).into(image);
                          }
                     }
                 }

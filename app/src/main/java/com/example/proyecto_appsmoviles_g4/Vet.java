@@ -16,6 +16,7 @@ public class Vet {
   private String status;
   private ArrayList<String> services;
   private ArrayList<String> photosPaths;
+  private ArrayList<Comentarios> comments;
   private String email;
   private String password;
   private String validatePassword;
@@ -23,7 +24,9 @@ public class Vet {
  private ArrayList<String> hours;
 
 
-    public Vet(String id,String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword,ArrayList<String> services ,ArrayList<String>photosPaths , ArrayList<String> hours) {
+
+
+    public Vet(String id, String name, String address, String phone, Double latitud, Double longitud, String pathImage, int score, String status, String email , String password , String validatePassword, ArrayList<String> services , ArrayList<String>photosPaths , ArrayList<String> hours, ArrayList<Comentarios> comentarios) {
         this.id = id;
         this.Name = name;
         this.address = address;
@@ -39,6 +42,7 @@ public class Vet {
         this.services = services;
         this.photosPaths = photosPaths;
         this.hours = hours;
+        this.comments = comentarios;
     }
 
 
@@ -168,5 +172,13 @@ public class Vet {
 
     public void setHours(ArrayList<String> hours) {
         this.hours = hours;
+    }
+
+    public ArrayList<Comentarios> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comentarios> comments) {
+        this.comments = comments;
     }
 }
