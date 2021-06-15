@@ -41,6 +41,7 @@ public class ProfileInfo extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerComments;
     private LinearLayoutManager layoutComments;
     private CommentAdapter commentAdapter;
+    String userName;
     String name;
 
     public ProfileInfo() {
@@ -61,9 +62,9 @@ public class ProfileInfo extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         db = FirebaseFirestore.getInstance();
         super.onCreate(savedInstanceState);
-
+        String userName = this.getArguments().getString("usersend");
         name = this.getArguments().getString("veterinariName");
-        Log.e(">>>>>>>>","el valor del vet es sisaaaaaaa"+name);
+        Log.e(">>>>>>>>","el valor del vet es sisaaaaaaa"+userName);
         getData(name);
     }
 
@@ -163,6 +164,8 @@ public class ProfileInfo extends Fragment implements View.OnClickListener {
         imageProfile = root.findViewById(R.id.photoPerfilProfile);
 
         commentButton.setOnClickListener(this);
+        userName = this.getArguments().getString("usernameProfile");
+
         return root;
     }
 
@@ -171,7 +174,8 @@ public class ProfileInfo extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.commentButton:
                 if (!commentText.getText().toString().equals("")) {
-                    addComments("Jean Carlos", commentText.getText().toString());
+                    addComments(userName, commentText.getText().toString());
+                    commentText.setText("");
                 }
                 break;
         }

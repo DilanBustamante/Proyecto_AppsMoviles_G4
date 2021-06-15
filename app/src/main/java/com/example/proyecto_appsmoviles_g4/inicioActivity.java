@@ -65,8 +65,8 @@ public class inicioActivity extends AppCompatActivity {
 
            this.ExtrasValidation();
 
-
-
+        String user1 = getIntent().getStringExtra("key2");
+        Log.e(">>>>>>>>","ESTE ES EL VALOR DEL USUARIO AAAA"+user1);
 
 
 
@@ -86,6 +86,9 @@ public class inicioActivity extends AppCompatActivity {
 
                         case R.id.veterinariaid:
                             String key2 = getIntent().getStringExtra("key2");
+                            homeFragment = homeFragment.newInstance();
+                            Bundle bundle1 = new Bundle();
+                            bundle1.putString("userName",key2);
                             this.showFragment(vetFragment);
                         break;
 
@@ -94,6 +97,12 @@ public class inicioActivity extends AppCompatActivity {
 
 
                         case R.id.profileid:
+
+                            String nameUser = getIntent().getStringExtra("key2");
+                            profileFragment = ProfileFragment.newInstance();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("userName",nameUser);
+                            profileFragment.setArguments(bundle);
                             this.showFragment(profileFragment);
                         break;
                     }

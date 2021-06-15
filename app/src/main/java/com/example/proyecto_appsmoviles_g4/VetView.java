@@ -1,6 +1,7 @@
 package com.example.proyecto_appsmoviles_g4;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,9 @@ public class VetView extends RecyclerView.ViewHolder implements View.OnClickList
             profileFragment = ProfileInfo.newInstance();
             Bundle bundle = new Bundle();
             bundle.putString("veterinariName",nameVet.getText().toString());
+            Intent intent = new Intent(context, VetView.class);
+            String user = intent.getStringExtra("usersend");
+            bundle.putString("usernameProfile",user);
             profileFragment.setArguments(bundle);
             showFragment( profileFragment);
         }
